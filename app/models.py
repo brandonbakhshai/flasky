@@ -66,7 +66,6 @@ class Upvoted(db.Model):
                             primary_key=True)
     upvoted_id = db.Column(db.Integer, db.ForeignKey('posts.id'),
                             primary_key=True)
-    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
 
 class Downvoted(db.Model):
     __tablename__ = 'downvoted'
@@ -74,8 +73,6 @@ class Downvoted(db.Model):
                             primary_key=True)
     downvoted_id = db.Column(db.Integer, db.ForeignKey('posts.id'),
                             primary_key=True)
-    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
-
 
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
@@ -92,6 +89,16 @@ class User(UserMixin, db.Model):
     last_seen = db.Column(db.DateTime(), default=datetime.utcnow)
     avatar_hash = db.Column(db.String(32))
     posts = db.relationship('Post', backref='author', lazy='dynamic')
+    upvoted = db.relationship('Upvoted',
+                              foreign_keys=[Upvoted.upvoter_id],
+                              backref=db.backref('upvoter', lazy='joined'),
+                              lazy='dynamic',
+                              cascade='all')
+    downvoted = db.relationship('Downvoted',
+                              foreign_keys=[Downvoted.downvoter_id],
+                              backref=db.backref('downvoter', lazy='joined'),
+                              lazy='dynamic',
+                              cascade='all')
     followed = db.relationship('Follow',
                                foreign_keys=[Follow.follower_id],
                                backref=db.backref('follower', lazy='joined'),
@@ -311,44 +318,52 @@ class Post(db.Model):
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     karma = db.Column(db.Integer, default=0)
     comments = db.relationship('Comment', backref='post', lazy='dynamic')
-    upvoted = db.relationship('Upvoted',
-                              foreign_keys=[Upvoted.upvoter_id],
-                              backref=db.backref('upvoter', lazy='joined'),
+    upvoters = db.relationship('Upvoted',
+                              foreign_keys=[Upvoted.upvoted_id],
+                              backref=db.backref('upvoted', lazy='joined'),
                               lazy='dynamic',
                               cascade='all')
-    downvoted = db.relationship('Downvoted',
-                              foreign_keys=[Downvoted.downvoter_id],
-                              backref=db.backref('downvoter', lazy='joined'),
+    downvoters = db.relationship('Downvoted',
+                              foreign_keys=[Downvoted.downvoted_id],
+                              backref=db.backref('downvoted', lazy='joined'),
                               lazy='dynamic',
                               cascade='all')
 
     def upvotedBy(self, user):
-        return self.upvoted.filter_by(
-            upvoted_id=user.id).first() is not None
+        return self.upvoters.filter_by(
+            upvoter_id=user.id).first() is not None
 
     def downvotedBy(self, user):
-        return self.downvoted.filter_by(
-            downvoted_id=user.id).first() is not None
+        return self.downvoters.filter_by(
+            downvoter_id=user.id).first() is not None
 
     def upvote(self, user):
         if not self.upvotedBy(user):
             if self.karma is None:
                 self.karma = 0
             self.karma += 1
-            u = Upvote(upvoter=user, upvoted=self)
-            db.session.add(self)
+            u = Upvoted(upvoter=user, upvoted=self)
             db.session.add(u)
-            db.session.commit()
+        else:
+            self.karma -= 1
+            u = self.upvoters.filter_by(upvoter_id=user.id).first()
+            db.session.delete(u)
+        db.session.commit()
+
+
 
     def downvote(self, user):
         if not self.downvotedBy(user):
             if self.karma is None:
                 self.karma = 0
             self.karma -= 1
-            d = Downvote(downvoter=user, downvoted=self)
-            db.session.add(self)
+            d = Downvoted(downvoter=user, downvoted=self)
             db.session.add(d)
-            db.session.commit()
+        else:
+            self.karma += 1
+            d = self.downvoters.filter_by(downvoter_id=user.id).first()
+            db.session.delete(d)
+        db.session.commit()
 
     @staticmethod
     def generate_fake(count=100):

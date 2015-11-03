@@ -147,6 +147,8 @@ def upvote(id):
     if current_user is None:
         flash('Invalid user.')
         return redirect(url_for('.index'))
+    elif post.downvotedBy(current_user):
+        post.downvote(current_user)
     post.upvote(current_user)
     return redirect(url_for('.index'))
 
@@ -158,6 +160,8 @@ def downvote(id):
     if current_user is None:
         flash('Invalid user.')
         return redirect(url_for('.index'))
+    elif post.upvotedBy(current_user):
+        post.upvote(current_user)
     post.downvote(current_user)
     return redirect(url_for('.index'))
 

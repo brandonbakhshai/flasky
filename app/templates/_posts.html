@@ -1,6 +1,6 @@
-<ul class="posts">
+<div class="posts">
     {% for post in posts %}
-    <li class="post">
+    <div class="post">
         <div class="post-thumbnail">
             <a href="{{ url_for('.user', username=post.author.username) }}">
                 <img class="img-rounded profile-thumbnail" src="{{ post.author.gravatar(size=40) }}">
@@ -26,12 +26,24 @@
                     <span class="label label-danger">Edit [Admin]</span>
                 </a>
                 {% endif %}
+                {% if current_user.is_authenticated and post.upvotedBy(current_user) %}
+                <a href="{{ url_for('.upvote', id=post.id) }}">
+                    <span class="label label-success">Upvoted</span>
+                </a>    
+                {% else %}
                 <a href="{{ url_for('.upvote', id=post.id) }}">
                     <span class="label label-default">Upvote</span>
                 </a>
+                {% endif %}
+                {% if current_user.is_authenticated and post.downvotedBy(current_user) %}
+                <a href="{{ url_for('.downvote', id=post.id) }}">
+                    <span class="label label-danger">Downvoted</span>
+                </a>
+                {% else %}
                 <a href="{{ url_for('.downvote', id=post.id) }}">
                     <span class="label label-default">Downvote</span>
                 </a>
+                {% endif %}
                 <a href="{{ url_for('.post', id=post.id) }}">
                     <span class="label label-default">Permalink</span>
                 </a>
@@ -40,6 +52,6 @@
                 </a>
             </div>
         </div>
-    </li>
+    </div>
     {% endfor %}
-</ul>
+</div>
