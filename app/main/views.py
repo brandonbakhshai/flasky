@@ -49,13 +49,17 @@ def index():
         query = current_user.followed_posts
     else:
         query = Post.query
-    pagination = query.order_by(Post.timestamp.desc()).paginate(
+    pagination = query.order_by(Post.karma.desc()).paginate(
         page, per_page=current_app.config['FLASKY_POSTS_PER_PAGE'],
         error_out=False)
     posts = pagination.items
     return render_template('index.html', form=form, posts=posts,
                            show_followed=show_followed, pagination=pagination)
 
+
+@main.route('/about', methods=['GET', 'POST'])
+def about():
+    return render_template('about.html')
 
 @main.route('/user/<username>')
 def user(username):
@@ -135,6 +139,27 @@ def post(id):
     return render_template('post.html', posts=[post], form=form,
                            comments=comments, pagination=pagination)
 
+@main.route('/upvote/<int:id>', methods=['GET'])
+@login_required
+#@permission_required(Permission.FOLLOW)
+def upvote(id):
+    post = Post.query.get_or_404(id)
+    if current_user is None:
+        flash('Invalid user.')
+        return redirect(url_for('.index'))
+    post.upvote(current_user)
+    return redirect(url_for('.index'))
+
+@main.route('/downvote/<int:id>', methods=['GET'])
+@login_required
+#@permission_required(Permission.FOLLOW)
+def downvote(id):
+    post = Post.query.get_or_404(id)
+    if current_user is None:
+        flash('Invalid user.')
+        return redirect(url_for('.index'))
+    post.downvote(current_user)
+    return redirect(url_for('.index'))
 
 @main.route('/edit/<int:id>', methods=['GET', 'POST'])
 @login_required
