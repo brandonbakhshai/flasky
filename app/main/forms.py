@@ -51,7 +51,10 @@ class EditProfileAdminForm(Form):
 
 
 class PostForm(Form):
-    body = PageDownField("What's on your mind?", validators=[Required()])
+    title = PageDownField("Title", validators=[Required()])
+    who = PageDownField("Who's Involved", validators=[Required()])
+    what = PageDownField("What Happened", validators=[Required()])
+    why = PageDownField("Why It Matters", validators=[Required()])
     submit = SubmitField('Submit')
 
 

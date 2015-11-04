@@ -12,18 +12,25 @@
 
 
 body {
-    /**background:#2f3238 !important;**/
+    background:#2f3238 !important;
 }
 
 .title {
     text-align:center;
     font-weight:900 !important;
     font-size:4em;
+    color:#ffffff;
 }
 .subtitle {
     text-align:center;
     font-size:2em;
+    color:#888888;
 }
+
+.hellotitle {
+    color:#888888;
+}
+
 .profile-thumbnail {
     position: absolute;
 }
