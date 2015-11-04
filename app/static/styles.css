@@ -12,9 +12,18 @@
 
 
 body {
-    background:#2f3238 !important;
+    /**background:#2f3238 !important;**/
 }
 
+.title {
+    text-align:center;
+    font-weight:900 !important;
+    font-size:4em;
+}
+.subtitle {
+    text-align:center;
+    font-size:2em;
+}
 .profile-thumbnail {
     position: absolute;
 }
@@ -36,7 +45,7 @@ div.posts div.post:nth-child(4n+1) {
     padding: 8px;
     background-color: #de6864;
     height:auto;
-    margin-bottom:20px !important;
+    margin-bottom:4em !important;
     position:relative;
     border-radius:5px;
 }
@@ -44,7 +53,7 @@ div.posts div.post:nth-child(4n+2) {
     padding: 8px;
     background-color: #82C14C;
     height:auto;
-    margin-bottom:20px !important;
+    margin-bottom:4em !important;
     position:relative;
     border-radius:5px;
 }
@@ -53,7 +62,7 @@ div.posts div.post:nth-child(4n+3) {
     padding: 8px;
     background-color: #589bbf;
     height:auto;
-    margin-bottom:20px !important;
+    margin-bottom:4em !important;
     position:relative;
     border-radius:5px;
 }
@@ -62,7 +71,7 @@ div.posts div.post:nth-child(4n+4) {
     padding: 8px;
     background-color: #C69CEA;
     height:auto;
-    margin-bottom:20px !important;
+    margin-bottom:4em !important;
     position:relative;
     border-radius:5px;
 }
@@ -82,11 +91,11 @@ div.post-thumbnail {
 div.post-content {
     margin-left: 48px;
     min-height: 48px;
+    margin-bottom:20px;
 }
 div.post-footer {
     text-align: right;
     position: absolute;
-    margin-top:1em;
     bottom:1em;
     right:1em;
 }
@@ -144,7 +153,6 @@ div.flask-pagedown-preview h3 {
 }
 .post-body {
     font-size: 4.5em;
-    font-style:bold;
     text-transform:uppercase;
     font-family: 'Raleway', Arial, sans-serif !important;
 }

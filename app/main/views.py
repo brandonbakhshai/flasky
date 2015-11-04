@@ -165,6 +165,19 @@ def downvote(id):
     post.downvote(current_user)
     return redirect(url_for('.index'))
 
+@main.route('/publish', methods=['GET', 'POST'])
+def publish():
+    form = PostForm()
+    if current_user.can(Permission.WRITE_ARTICLES) and \
+            form.validate_on_submit():
+        post = Post(body=form.body.data,
+                    author=current_user._get_current_object())
+        db.session.add(post)
+        db.session.commit()
+        flash('The post has been published.')
+        return redirect(url_for('.post', id=post.id))
+    return render_template('publish.html', form=form)
+
 @main.route('/edit/<int:id>', methods=['GET', 'POST'])
 @login_required
 def edit(id):
