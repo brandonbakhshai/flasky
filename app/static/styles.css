@@ -1,3 +1,16 @@
+@font-face {
+    font-weight: normal;
+    font-style: normal;
+    font-family: 'codropsicons';
+    src:url('../fonts/codropsicons/codropsicons.eot');
+    src:url('../fonts/codropsicons/codropsicons.eot?#iefix') format('embedded-opentype'),
+    url('../fonts/codropsicons/codropsicons.woff') format('woff'),
+    url('../fonts/codropsicons/codropsicons.ttf') format('truetype'),
+    url('../fonts/codropsicons/codropsicons.svg#codropsicons') format('svg');
+}
+
+
+
 body {
     background:#2f3238 !important;
 }
@@ -22,28 +35,36 @@ div.post-tabs div.posts {
 div.posts div.post:nth-child(4n+1) {
     padding: 8px;
     background-color: #de6864;
-    height:14em;
+    height:auto;
     margin-bottom:20px !important;
+    position:relative;
+    border-radius:5px;
 }
 div.posts div.post:nth-child(4n+2) {
     padding: 8px;
     background-color: #82C14C;
-    height:14em;
+    height:auto;
     margin-bottom:20px !important;
+    position:relative;
+    border-radius:5px;
 }
 
 div.posts div.post:nth-child(4n+3) {
     padding: 8px;
     background-color: #589bbf;
-    height:14em;
+    height:auto;
     margin-bottom:20px !important;
+    position:relative;
+    border-radius:5px;
 }
 
 div.posts div.post:nth-child(4n+4) {
     padding: 8px;
     background-color: #C69CEA;
-    height: 14em;
+    height:auto;
     margin-bottom:20px !important;
+    position:relative;
+    border-radius:5px;
 }
 
 div.posts div.post:hover {
@@ -64,7 +85,10 @@ div.post-content {
 }
 div.post-footer {
     text-align: right;
-    float:bottom;
+    position: absolute;
+    margin-top:1em;
+    bottom:1em;
+    right:1em;
 }
 ul.comments {
     list-style-type: none;
@@ -117,6 +141,12 @@ div.flask-pagedown-preview h2 {
 }
 div.flask-pagedown-preview h3 {
     font-size: 120%;
+}
+.post-body {
+    font-size: 4.5em;
+    font-style:bold;
+    text-transform:uppercase;
+    font-family: 'Raleway', Arial, sans-serif !important;
 }
 .post-body h1 {
     font-size: 140%;
